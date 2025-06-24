@@ -29,24 +29,9 @@ body {
 #root {
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: block;
   margin: 0;
   padding: 0;
-}
-
-/* 容器居中样式 */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
-}
-
-/* 确保所有section都有正确的宽度 */
-section {
-  width: 100%;
-  display: block;
 }
 
 /* 自定义滚动条 */
@@ -78,45 +63,11 @@ section {
   color: #ffffff;
 }
 
-/* 链接默认样式 */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* 按钮默认样式重置 */
-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-/* 输入框默认样式 */
-input, textarea {
-  font-family: inherit;
-  border: none;
-  outline: none;
-}
-
-/* 响应式图片 */
-img {
+/* 响应式图片和视频 */
+img, video {
   max-width: 100%;
   height: auto;
   display: block;
-}
-
-/* 防止视频溢出 */
-video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* 表格样式 */
-table {
-  border-collapse: collapse;
-  width: 100%;
 }
 
 /* 移除列表样式 */
@@ -133,22 +84,10 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* 禁用选择的元素 */
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 /* 加载动画 */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideUp {
@@ -162,54 +101,71 @@ a:focus-visible {
   }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
 /* 工具类 */
-.fade-in {
-  animation: fadeIn 0.6s ease-out;
-}
+.fade-in { animation: fadeIn 0.6s ease-out; }
+.slide-up { animation: slideUp 0.8s ease-out; }
+.float { animation: float 3s ease-in-out infinite; }
 
-.slide-up {
-  animation: slideUp 0.8s ease-out;
-}
-
-/* 响应式工具类 */
+/* 响应式设计 */
 @media (max-width: 768px) {
-  .hide-mobile {
-    display: none !important;
-  }
-  
-  .container {
-    padding: 0 15px;
-  }
+  .hide-mobile { display: none !important; }
+  body { font-size: 14px; }
 }
 
 @media (min-width: 769px) {
-  .hide-desktop {
-    display: none !important;
-  }
+  .hide-desktop { display: none !important; }
 }
 
-/* 确保移动端布局 */
+/* 移动端优化 */
 @media (max-width: 480px) {
-  .container {
-    padding: 0 10px;
-  }
-  
-  body {
-    font-size: 14px;
+  body { font-size: 12px; }
+}
+
+/* 高分辨率屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body { -webkit-font-smoothing: antialiased; }
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
   }
 }
 
-/* 打印样式 */
-@media print {
-  body {
-    background: white !important;
-    color: black !important;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
   }
-  
-  * {
-    background: transparent !important;
-    color: black !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+  to {
+    transform: rotate(360deg);
   }
 }
