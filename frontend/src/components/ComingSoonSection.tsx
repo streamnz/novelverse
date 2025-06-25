@@ -243,7 +243,7 @@ const ComingSoonSection: React.FC = () => {
   };
 
   return (
-    <ComingSoonContainer>
+    <ComingSoonContainer id="early-access">
       <ContentWrapper>
         <motion.div
           variants={staggerChildren}

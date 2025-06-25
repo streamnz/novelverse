@@ -53,24 +53,6 @@ const HeroContent = styled.div`
   }
 `;
 
-const ComingSoonBadge = styled(motion.div)`
-  display: inline-block;
-  background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
-  color: white;
-  padding: 8px 20px;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-    font-size: 0.8rem;
-    padding: 6px 16px;
-  }
-`;
-
 const MainTitle = styled(motion.h1)`
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 900;
@@ -253,6 +235,16 @@ const HeroSection: React.FC = () => {
     setShowVideoModal(false);
   };
 
+  const handleGetEarlyAccess = () => {
+    const earlyAccessSection = document.getElementById('early-access');
+    if (earlyAccessSection) {
+      earlyAccessSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   // 阻止背景滚动当模态框打开时
   useEffect(() => {
     if (showVideoModal) {
@@ -306,13 +298,6 @@ const HeroSection: React.FC = () => {
           animate="animate"
         >
           <HeroContent>
-            <ComingSoonBadge
-              variants={fadeInUp}
-              whileHover={{ scale: 1.05 }}
-            >
-              Coming Soon
-            </ComingSoonBadge>
-            
             <MainTitle variants={fadeInUp}>
               NovelVerse
             </MainTitle>
@@ -331,6 +316,7 @@ const HeroSection: React.FC = () => {
               <CTAButton
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={handleGetEarlyAccess}
               >
                 Get Early Access
               </CTAButton>
