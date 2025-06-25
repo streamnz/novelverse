@@ -160,9 +160,82 @@ const SecondaryButton = styled(motion.button)`
   }
 `;
 
+// 新增的模态框样式组件
+const VideoModal = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+`;
+
+const VideoContainer = styled(motion.div)`
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+`;
+
+const CloseButton = styled(motion.button)`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1001;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+  }
+  
+  &:before {
+    content: '✕';
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+`;
+
+const VideoIframe = styled.iframe`
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 15px;
+`;
+
 const HeroSection: React.FC = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   const handleVideoLoaded = () => {
     setVideoLoaded(true);
@@ -171,6 +244,28 @@ const HeroSection: React.FC = () => {
   const handleVideoError = () => {
     setVideoError(true);
   };
+
+  const handleWatchDemo = () => {
+    setShowVideoModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowVideoModal(false);
+  };
+
+  // 阻止背景滚动当模态框打开时
+  useEffect(() => {
+    if (showVideoModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // 清理函数
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showVideoModal]);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
@@ -187,67 +282,102 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <HeroContainer>
-      {!videoError && (
-        <VideoBackground 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          preload="auto"
-          onLoadedData={handleVideoLoaded}
-          onError={handleVideoError}
-        >
-          <source src="/background.mp4" type="video/mp4" />
-          Your browser does not support video playback.
-        </VideoBackground>
-      )}
-      <VideoOverlay />
-      
-      <motion.div
-        variants={staggerChildren}
-        initial="initial"
-        animate="animate"
-      >
-        <HeroContent>
-          <ComingSoonBadge
-            variants={fadeInUp}
-            whileHover={{ scale: 1.05 }}
+    <>
+      <HeroContainer>
+        {!videoError && (
+          <VideoBackground 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            preload="auto"
+            onLoadedData={handleVideoLoaded}
+            onError={handleVideoError}
           >
-            Coming Soon
-          </ComingSoonBadge>
-          
-          <MainTitle variants={fadeInUp}>
-            NovelVerse
-          </MainTitle>
-          
-          <Subtitle variants={fadeInUp}>
-            AI-Powered Cinematic Storytelling Universe
-          </Subtitle>
-          
-          <Description variants={fadeInUp}>
-            Experience the future of entertainment where Chinese cultivation novels transform into 
-            immersive English narratives through cutting-edge AI, featuring cinematic videos, 
-            interactive storytelling, and blockchain-powered digital collectibles.
-          </Description>
-          
-          <ButtonGroup variants={fadeInUp}>
-            <CTAButton
+            <source src="/background.mp4" type="video/mp4" />
+            Your browser does not support video playback.
+          </VideoBackground>
+        )}
+        <VideoOverlay />
+        
+        <motion.div
+          variants={staggerChildren}
+          initial="initial"
+          animate="animate"
+        >
+          <HeroContent>
+            <ComingSoonBadge
+              variants={fadeInUp}
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
-              Get Early Access
-            </CTAButton>
-            <SecondaryButton
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Watch Demo
-            </SecondaryButton>
-          </ButtonGroup>
-        </HeroContent>
-      </motion.div>
-    </HeroContainer>
+              Coming Soon
+            </ComingSoonBadge>
+            
+            <MainTitle variants={fadeInUp}>
+              NovelVerse
+            </MainTitle>
+            
+            <Subtitle variants={fadeInUp}>
+              AI-Powered Cinematic Storytelling Universe
+            </Subtitle>
+            
+            <Description variants={fadeInUp}>
+              Experience the future of entertainment where Chinese cultivation novels transform into 
+              immersive English narratives through cutting-edge AI, featuring cinematic videos, 
+              interactive storytelling, and blockchain-powered digital collectibles.
+            </Description>
+            
+            <ButtonGroup variants={fadeInUp}>
+              <CTAButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Get Early Access
+              </CTAButton>
+              <SecondaryButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleWatchDemo}
+              >
+                Watch Demo
+              </SecondaryButton>
+            </ButtonGroup>
+          </HeroContent>
+        </motion.div>
+      </HeroContainer>
+
+      {/* 视频模态框 */}
+      {showVideoModal && (
+        <VideoModal
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={handleCloseModal}
+        >
+          <VideoContainer
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CloseButton
+              onClick={handleCloseModal}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              title="关闭视频"
+            />
+            <VideoIframe
+              src="https://www.youtube.com/embed/0TDII5IkI3Y?autoplay=1&rel=0"
+              title="NovelVerse Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </VideoContainer>
+        </VideoModal>
+      )}
+    </>
   );
 };
 

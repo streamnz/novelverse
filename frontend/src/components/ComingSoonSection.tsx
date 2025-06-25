@@ -270,7 +270,7 @@ const ComingSoonSection: React.FC = () => {
           <LaunchInfo variants={fadeInUp}>
             <LaunchDate>
               <span>📅</span>
-              <span>Expected Launch: Q2 2025</span>
+              <span>Expected Launch: Q4 2025</span>
             </LaunchDate>
             <LaunchDescription>
               Beta testing begins soon with exclusive early access for subscribers
